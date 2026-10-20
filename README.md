@@ -21,7 +21,7 @@
 
 ## ✨ Features & Micro-Interactions
 
-- **Floating Dribbble-Style Presentation Canvas**: Sits inside a generous rounded container (`rounded-[32px]`) with soft diffused drop-shadows and dark/light outer background.
+- **Full-Page Edge-to-Edge Architecture**: Engineered as a production-grade full-screen SaaS application with docked left navigation sidebar, sticky top header, and responsive multi-column bento grid.
 - **Persistent Left Navigation Sidebar**: Complete with "Donezo" logo, "MENU" items (Dashboard active pill, Tasks with `12+` badge, Calendar, Analytics, Team), "GENERAL" settings, bottom Mobile App promo card, and user profile badge.
 - **Top Command & Search Header**: Search input with keyboard shortcut pill (`⌘F`), notifications bell with alert beacon, and creator profile pill.
 - **4 Bento Key Metric Cards**: "Total Projects" (24, dark emerald highlighted card with arrow trigger), "Ended Projects" (10), "Running Projects" (12), and "Pending Project" (2, On Discuss).
