@@ -311,7 +311,7 @@
         <!-- ============================================================ -->
         <!-- ROW 1: 4 BENTO METRIC CARDS (Image 3 Direct Match)           -->
         <!-- ============================================================ -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <div id="kpiMetricsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
           
           <!-- CARD 1: TOTAL PROJECTS (HIGHLIGHTED EMERALD CARD) -->
           <div class="bento-card rounded-2xl sm:rounded-3xl p-5 bg-brand-900 dark:bg-brand-950 text-white shadow-sm flex flex-col justify-between space-y-3 relative overflow-hidden group">
@@ -399,7 +399,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
           
           <!-- COLUMN 1 (5 COLS): PROJECT ANALYTICS BAR CHART -->
-          <div class="lg:col-span-5 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-4">
+          <div id="projectAnalyticsCard" class="lg:col-span-5 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-4">
             <div class="flex items-center justify-between">
               <div>
                 <h3 class="text-sm font-bold text-slate-900 dark:text-white">Project Analytics</h3>
@@ -481,7 +481,7 @@
           </div>
 
           <!-- COLUMN 2 (3 COLS): REMINDERS WIDGET (Image 3 Direct Match) -->
-          <div class="lg:col-span-3 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-4">
+          <div id="remindersCard" class="lg:col-span-3 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-4">
             <div>
               <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Reminders</span>
               <h4 class="text-base font-extrabold text-slate-900 dark:text-white mt-1 leading-snug">Meeting with Arc Company</h4>
@@ -505,7 +505,7 @@
           </div>
 
           <!-- COLUMN 3 (4 COLS): PROJECT TASKS LIST (Image 3 Direct Match) -->
-          <div class="lg:col-span-4 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-3">
+          <div id="projectTasksCard" class="lg:col-span-4 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-3">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-bold text-slate-900 dark:text-white">Project</h3>
               <button class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-[11px] font-bold text-slate-600 dark:text-slate-300 transition-colors">
@@ -594,7 +594,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
           
           <!-- COLUMN 1 (5 COLS): TEAM COLLABORATION (Image 3 Direct Match) -->
-          <div class="lg:col-span-5 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-3">
+          <div id="teamCollabCard" class="lg:col-span-5 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-3">
             <div class="flex items-center justify-between">
               <div>
                 <h3 class="text-sm font-bold text-slate-900 dark:text-white">Team Collaboration</h3>
@@ -665,7 +665,7 @@
           </div>
 
           <!-- COLUMN 2 (3 COLS): PROJECT PROGRESS RADIAL GAUGE (Image 3 Direct Match) -->
-          <div class="lg:col-span-3 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between items-center text-center space-y-3">
+          <div id="projectProgressCard" class="lg:col-span-3 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between items-center text-center space-y-3">
             <div class="w-full text-left">
               <h3 class="text-sm font-bold text-slate-900 dark:text-white">Project Progress</h3>
               <p class="text-xs text-slate-400">Monthly milestone health</p>
@@ -717,7 +717,7 @@
           </div>
 
           <!-- COLUMN 3 (4 COLS): TIME TRACKER WIDGET (Image 3 Direct Match) -->
-          <div class="lg:col-span-4 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 time-tracker-bg text-white shadow-sm flex flex-col justify-between space-y-4 relative overflow-hidden">
+          <div id="timeTrackerCard" class="lg:col-span-4 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 time-tracker-bg text-white shadow-sm flex flex-col justify-between space-y-4 relative overflow-hidden">
             <div class="relative z-10 flex items-center justify-between">
               <div>
                 <span class="text-xs font-semibold text-brand-200">Time Tracker</span>
@@ -762,7 +762,7 @@
         <!-- ============================================================ -->
         <!-- ROW 4: DATA TABLE WIDGET (Image 1 & 5 Inspired)             -->
         <!-- ============================================================ -->
-        <div class="bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm space-y-4">
+        <div id="deliverablesTableCard" class="bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h3 class="text-sm font-bold text-slate-900 dark:text-white">Active Tasks & Deliverables</h3>
