@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donezo - Modern Project & Task Management Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            },
+            canvas: {
+              light: '#f1f3f7',
+              dark: '#070a0f',
+            },
+            panel: {
+              light: '#ffffff',
+              dark: '#0f141d',
+              cardLight: '#ffffff',
+              cardDark: '#141b27',
+              borderLight: '#eef1f6',
+              borderDark: '#1e2638',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Striped Patterns for Analytics Bar Chart */
+    .bg-stripes {
+      background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15) 6px, transparent 6px, transparent 12px);
+    }
+    .bg-stripes-dark {
+      background-image: repeating-linear-gradient(45deg, rgba(16, 185, 129, 0.25), rgba(16, 185, 129, 0.25) 5px, transparent 5px, transparent 10px);
+    }
+
+    /* Wave Background for Time Tracker */
+    .time-tracker-bg {
+      background: radial-gradient(circle at top right, #065f46 0%, #064e3b 60%, #022c22 100%);
+    }
+
+    /* Smooth Hover Transitions */
+    .bento-card {
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bento-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(16, 185, 129, 0.18);
+    }
+    .dark .bento-card:hover {
+      box-shadow: 0 14px 30px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Tooltip Bubble */
+    .chart-tooltip {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Mobile Sheet Drawer Animation */
+    #mobileSidebar {
+      transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #mobileBackdrop {
+      transition: opacity 300ms ease;
+    }
+  </style>
+</head>
+<body class="bg-[#fafbfe] dark:bg-[#070a0f] text-slate-800 dark:text-slate-100 min-h-screen flex m-0 p-0 transition-colors duration-300 font-sans selection:bg-brand-500 selection:text-white antialiased overflow-x-hidden">
+
+  <!-- ============================================================ -->
+  <!-- LEFT SIDEBAR NAVIGATION (Docks to Left Edge of Screen)       -->
+  <!-- ============================================================ -->
+  <aside class="hidden lg:flex w-64 h-screen sticky top-0 shrink-0 flex-col justify-between p-6 border-r border-slate-200/80 dark:border-slate-800/80 bg-white dark:bg-[#0c1017] select-none z-30 overflow-y-auto">
+      
+      <!-- Top Section: Logo & Nav -->
+      <div class="space-y-6">
+        
+        <!-- Logo -->
+        <div class="flex items-center gap-2.5 px-2">
+          <div class="w-9 h-9 rounded-2xl bg-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/30">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm0-8h-2V7h2v2zm4 8h-2v-4h2v4zm0-6h-2V7h2v4z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white leading-none">Donezo</h1>
+            <p class="text-[10px] text-slate-400 font-medium">Project OS</p>
+          </div>
+        </div>
+
+        <!-- Section: MENU -->
+        <div class="space-y-1">
+          <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wider uppercase px-3">Menu</span>
+          
+          <nav class="space-y-1 pt-1 font-medium text-xs">
+            <!-- Active Item: Dashboard -->
+            <a href="#" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-brand-900 dark:bg-brand-600 text-white font-semibold shadow-md shadow-brand-900/15 transition-all">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                <span>Dashboard</span>
+              </div>
+            </a>
+
+            <!-- Tasks with Badge -->
+            <a href="#" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-panel-cardDark hover:text-slate-900 dark:hover:text-white transition-all">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                <span>Tasks</span>
+              </div>
+              <span class="px-2 py-0.5 text-[10px] font-bold bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 rounded-full font-mono">12+</span>
+            </a>
+
+            <!-- Calendar -->
+            <a href="#" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-panel-cardDark hover:text-slate-900 dark:hover:text-white transition-all">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Calendar</span>
+            </a>
+
+            <!-- Analytics -->
+            <a href="#" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-panel-cardDark hover:text-slate-900 dark:hover:text-white transition-all">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              <span>Analytics</span>
+            </a>
+
+            <!-- Team -->
+            <a href="#" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-panel-cardDark hover:text-slate-900 dark:hover:text-white transition-all">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              <span>Team</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Section: GENERAL -->
+        <div class="space-y-1">
+          <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wider uppercase px-3">General</span>
+          
+          <nav class="space-y-1 pt-1 font-medium text-xs">
+            <a href="#" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-panel-cardDark hover:text-slate-900 dark:hover:text-white transition-all">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Settings</span>
+            </a>
+
+            <a href="#" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-panel-cardDark hover:text-slate-900 dark:hover:text-white transition-all">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              <span>Help Center</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Bottom Section: Mobile Promo Card & User Badge -->
+      <div class="space-y-4 pt-4">
+        <!-- Download App Promo Card (From Image 3) -->
+        <div class="rounded-2xl p-4 bg-brand-950 text-white relative overflow-hidden shadow-lg border border-brand-800/40">
+          <div class="relative z-10 space-y-2">
+            <div class="w-7 h-7 rounded-lg bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div class="text-xs font-bold leading-tight">Download our Mobile App</div>
+            <p class="text-[10px] text-brand-200/70 leading-normal">Get easy access to your projects anywhere.</p>
+            <button class="w-full py-1.5 px-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-[11px] font-bold text-white transition-all shadow-md active:scale-95">
+              Download
+            </button>
+          </div>
+          <!-- Decorative Swirl -->
+          <div class="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-brand-500/15 blur-xl"></div>
+        </div>
+
+        <!-- User Profile Pill -->
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-600 to-emerald-400 p-[1.5px] flex items-center justify-center">
+              <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center font-bold text-white text-[11px]">
+                BM
+              </div>
+            </div>
+            <div class="flex flex-col text-left leading-tight">
+              <span class="text-xs font-bold text-slate-900 dark:text-white whitespace-nowrap">Bahaa M.</span>
+              <span class="text-[10px] text-slate-400 font-medium whitespace-nowrap">Lead Architect</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============================================================ -->
+    <!-- RIGHT MAIN CONTENT DASHBOARD BODY                           -->
+    <!-- ============================================================ -->
+    <div class="flex-1 flex flex-col min-w-0 bg-[#fafbfe] dark:bg-[#0b0f17]">
+      
+      <!-- TOP NAV / SEARCH & PROFILE BAR -->
+      <header class="h-16 px-6 sm:px-8 border-b border-slate-200/80 dark:border-panel-borderDark flex items-center justify-between gap-4 bg-white/90 dark:bg-panel-dark/90 backdrop-blur-md sticky top-0 z-20">
+        
+        <!-- Search Input with Keyboard Shortcut -->
+        <div class="flex items-center gap-3 w-full max-w-md">
+          <div class="relative w-full">
+            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input 
+              type="text" 
+              id="searchInput" 
+              placeholder="Search task, project, or member..." 
+              class="w-full pl-10 pr-12 py-2 rounded-full bg-slate-100/80 dark:bg-panel-cardDark border border-transparent focus:border-brand-500 dark:focus:border-brand-500 focus:bg-white dark:focus:bg-panel-cardDark text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 outline-none transition-all"
+            />
+            <span class="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] font-mono text-slate-400 font-semibold shadow-2xs">⌘F</span>
+          </div>
+        </div>
+
+        <!-- Right Quick Actions -->
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+          
+          <!-- Theme Switcher -->
+          <button id="themeToggleBtn" aria-label="Toggle Theme" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 active:scale-95 transition-all shadow-xs">
+            <svg id="sunIcon" class="w-4 h-4 hidden dark:block text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <circle cx="12" cy="12" r="5" stroke-width="2"/>
+              <path stroke-width="2" stroke-linecap="round" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+            <svg id="moonIcon" class="w-4 h-4 block dark:hidden text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
+
+          <!-- Notification Bell -->
+          <button class="relative w-9 h-9 rounded-full bg-slate-100 dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 active:scale-95 transition-all shadow-xs" aria-label="Notifications">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white dark:ring-panel-dark"></span>
+          </button>
+
+          <!-- User Profile Avatar Pill -->
+          <div class="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-panel-borderDark">
+            <div class="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+              BM
+            </div>
+            <div class="flex flex-col text-left leading-none">
+              <span class="text-xs font-bold text-slate-900 dark:text-white">Bahaa Mohammed</span>
+              <span class="text-[10px] text-slate-400">tmichael20@gmail.com</span>
+            </div>
+          </div>
+
+          <!-- Mobile Hamburger -->
+          <button id="mobileMenuOpenBtn" class="flex lg:hidden w-9 h-9 rounded-full bg-slate-100 dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark items-center justify-center text-slate-600 dark:text-slate-300" aria-label="Open Mobile Menu">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- SCROLLABLE DASHBOARD CANVAS -->
+      <main class="flex-1 p-6 sm:p-8 space-y-6 overflow-y-auto w-full">
+        
+        <!-- PAGE TITLE & TOP ACTIONS -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Dashboard</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">Plan, prioritize, and accomplish your tasks with ease.</p>
+          </div>
+
+          <div class="flex items-center gap-2.5">
+            <button id="addProjectBtn" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-900 dark:bg-brand-600 hover:brightness-110 text-white text-xs font-bold shadow-md shadow-brand-900/20 active:scale-95 transition-all">
+              <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              <span>Add Project</span>
+            </button>
+            <button id="importDataBtn" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-panel-cardDark border border-slate-200 dark:border-panel-borderDark hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold shadow-xs active:scale-95 transition-all">
+              <span>Import Data</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ROW 1: 4 BENTO METRIC CARDS (Image 3 Direct Match)           -->
+        <!-- ============================================================ -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+          
+          <!-- CARD 1: TOTAL PROJECTS (HIGHLIGHTED EMERALD CARD) -->
+          <div class="bento-card rounded-2xl sm:rounded-3xl p-5 bg-brand-900 dark:bg-brand-950 text-white shadow-sm flex flex-col justify-between space-y-3 relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-brand-100/90 tracking-wide">Total Projects</span>
+              <button class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all">
+                <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </button>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-4xl font-extrabold tracking-tight">24</div>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] font-medium text-brand-200/90 pt-1">
+              <span class="px-1.5 py-0.5 rounded bg-brand-800/80 text-[10px] font-bold">↗</span>
+              <span>Increased from last month</span>
+            </div>
+          </div>
+
+          <!-- CARD 2: ENDED PROJECTS -->
+          <div class="bento-card rounded-2xl sm:rounded-3xl p-5 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark text-slate-900 dark:text-white shadow-sm flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">Ended Projects</span>
+              <button class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all">
+                <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </button>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-4xl font-extrabold tracking-tight">10</div>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 pt-1">
+              <span class="px-1.5 py-0.5 rounded bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-bold text-[10px]">↗</span>
+              <span>Increased from last month</span>
+            </div>
+          </div>
+
+          <!-- CARD 3: RUNNING PROJECTS -->
+          <div class="bento-card rounded-2xl sm:rounded-3xl p-5 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark text-slate-900 dark:text-white shadow-sm flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">Running Projects</span>
+              <button class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all">
+                <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </button>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-4xl font-extrabold tracking-tight">12</div>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 pt-1">
+              <span class="px-1.5 py-0.5 rounded bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-bold text-[10px]">↗</span>
+              <span>Increased from last month</span>
+            </div>
+          </div>
+
+          <!-- CARD 4: PENDING PROJECT -->
+          <div class="bento-card rounded-2xl sm:rounded-3xl p-5 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark text-slate-900 dark:text-white shadow-sm flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 tracking-wide">Pending Project</span>
+              <button class="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-all">
+                <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </button>
+            </div>
+            <div>
+              <div class="text-3xl sm:text-4xl font-extrabold tracking-tight">2</div>
+            </div>
+            <div class="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 pt-1">
+              <span class="px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold text-[10px]">⏳</span>
+              <span>On Discuss</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ROW 2: PROJECT ANALYTICS BAR CHART, REMINDERS, PROJECTS      -->
+        <!-- ============================================================ -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          
+          <!-- COLUMN 1 (5 COLS): PROJECT ANALYTICS BAR CHART -->
+          <div class="lg:col-span-5 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">Project Analytics</h3>
+                <p class="text-xs text-slate-400">Weekly task velocity</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-900 dark:bg-brand-500"></span>
+                <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">This Week</span>
+              </div>
+            </div>
+
+            <!-- Custom Interactive Pill-Bar Chart -->
+            <div class="relative h-44 w-full flex items-end justify-between px-2 pt-6 pb-2">
+              
+              <!-- Floating Active Tooltip for Tuesday / Selected Bar -->
+              <div id="chartTooltip" class="chart-tooltip absolute -top-1 left-[38%] -translate-x-1/2 px-2.5 py-1 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-mono font-bold shadow-lg pointer-events-none z-10 flex items-center gap-1">
+                <span id="tooltipVal">34%</span>
+                <span class="text-brand-400 dark:text-brand-600">• 8 Tasks</span>
+              </div>
+
+              <!-- Sunday -->
+              <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="18%" data-tasks="4 Tasks">
+                <div class="w-7 sm:w-8 h-24 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-12 rounded-full bg-stripes-dark"></div>
+                </div>
+                <span class="text-[11px] font-semibold text-slate-400">S</span>
+              </div>
+
+              <!-- Monday -->
+              <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="26%" data-tasks="6 Tasks">
+                <div class="w-7 sm:w-8 h-32 rounded-full bg-brand-800 dark:bg-brand-700 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-full rounded-full bg-brand-900 dark:bg-brand-600"></div>
+                </div>
+                <span class="text-[11px] font-semibold text-slate-400">M</span>
+              </div>
+
+              <!-- Tuesday (ACTIVE HIGHLIGHT) -->
+              <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="34%" data-tasks="8 Tasks">
+                <div class="w-7 sm:w-8 h-36 rounded-full bg-brand-500 flex items-end p-1 shadow-lg shadow-brand-500/25 transition-all scale-105">
+                  <div class="w-full h-24 rounded-full bg-brand-100/90 dark:bg-brand-200"></div>
+                </div>
+                <span class="text-[11px] font-bold text-brand-600 dark:text-brand-400">T</span>
+              </div>
+
+              <!-- Wednesday -->
+              <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="30%" data-tasks="7 Tasks">
+                <div class="w-7 sm:w-8 h-36 rounded-full bg-brand-900 dark:bg-brand-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-full rounded-full bg-brand-900 dark:bg-brand-700"></div>
+                </div>
+                <span class="text-[11px] font-semibold text-slate-400">W</span>
+              </div>
+
+              <!-- Thursday -->
+              <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="14%" data-tasks="3 Tasks">
+                <div class="w-7 sm:w-8 h-28 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-16 rounded-full bg-stripes-dark"></div>
+                </div>
+                <span class="text-[11px] font-semibold text-slate-400">T</span>
+              </div>
+
+              <!-- Friday -->
+              <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="12%" data-tasks="2 Tasks">
+                <div class="w-7 sm:w-8 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-10 rounded-full bg-stripes-dark"></div>
+                </div>
+                <span class="text-[11px] font-semibold text-slate-400">F</span>
+              </div>
+
+              <!-- Saturday -->
+              <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="20%" data-tasks="5 Tasks">
+                <div class="w-7 sm:w-8 h-24 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-12 rounded-full bg-stripes-dark"></div>
+                </div>
+                <span class="text-[11px] font-semibold text-slate-400">S</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMN 2 (3 COLS): REMINDERS WIDGET (Image 3 Direct Match) -->
+          <div class="lg:col-span-3 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-4">
+            <div>
+              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Reminders</span>
+              <h4 class="text-base font-extrabold text-slate-900 dark:text-white mt-1 leading-snug">Meeting with Arc Company</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 font-mono mt-1">Time: 02:00 pm - 04:00 pm</p>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-brand-50 dark:bg-brand-900/20 border border-brand-200/60 dark:border-brand-800/40 space-y-1.5">
+              <div class="flex items-center gap-2 text-xs font-bold text-brand-900 dark:text-brand-300">
+                <span class="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>
+                <span>Zoom Room Ready</span>
+              </div>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">Design system alignment & token handoff.</p>
+            </div>
+
+            <button id="startMeetingBtn" class="w-full py-2.5 px-4 rounded-2xl bg-brand-900 dark:bg-brand-600 hover:brightness-110 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md shadow-brand-900/20 active:scale-95 transition-all">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+              </svg>
+              <span id="startMeetingText">Start Meeting</span>
+            </button>
+          </div>
+
+          <!-- COLUMN 3 (4 COLS): PROJECT TASKS LIST (Image 3 Direct Match) -->
+          <div class="lg:col-span-4 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">Project</h3>
+              <button class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-[11px] font-bold text-slate-600 dark:text-slate-300 transition-colors">
+                + New
+              </button>
+            </div>
+
+            <!-- List Items -->
+            <div class="space-y-3 pt-1">
+              <!-- Item 1 -->
+              <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-xs">
+                    //
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Develop API Endpoints</h5>
+                    <span class="text-[10px] text-slate-400 font-mono">Due date: Nov 26, 2026</span>
+                  </div>
+                </div>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">
+                    ⚡
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Onboarding Flow</h5>
+                    <span class="text-[10px] text-slate-400 font-mono">Due date: Nov 28, 2026</span>
+                  </div>
+                </div>
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-xs">
+                    ❖
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Build Dashboard</h5>
+                    <span class="text-[10px] text-slate-400 font-mono">Due date: Nov 30, 2026</span>
+                  </div>
+                </div>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+
+              <!-- Item 4 -->
+              <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs">
+                    ⚙
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Optimize Page Load</h5>
+                    <span class="text-[10px] text-slate-400 font-mono">Due date: Dec 5, 2026</span>
+                  </div>
+                </div>
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ROW 3: TEAM COLLABORATION, PROJECT PROGRESS, TIME TRACKER    -->
+        <!-- ============================================================ -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          
+          <!-- COLUMN 1 (5 COLS): TEAM COLLABORATION (Image 3 Direct Match) -->
+          <div class="lg:col-span-5 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">Team Collaboration</h3>
+                <p class="text-xs text-slate-400">Active project contributors</p>
+              </div>
+              <button class="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-[11px] font-bold text-slate-600 dark:text-slate-300 transition-colors">
+                + Add Member
+              </button>
+            </div>
+
+            <div class="space-y-3 pt-1">
+              <!-- Member 1 -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xs">
+                    AD
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-900 dark:text-white">Alexandra Deff</h5>
+                    <span class="text-[10px] text-slate-400">Working on GitHub Repository</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">Completed</span>
+              </div>
+
+              <!-- Member 2 -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs">
+                    EA
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-900 dark:text-white">Edwin Adenike</h5>
+                    <span class="text-[10px] text-slate-400">Integrate Auth System</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-[10px] font-bold">In-Progress</span>
+              </div>
+
+              <!-- Member 3 -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">
+                    IO
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-900 dark:text-white">Isaac Oluwatemilorun</h5>
+                    <span class="text-[10px] text-slate-400">Search & Filter Functionality</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-bold">Pending</span>
+              </div>
+
+              <!-- Member 4 -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-cyan-100 text-cyan-600 flex items-center justify-center font-bold text-xs">
+                    DO
+                  </div>
+                  <div>
+                    <h5 class="text-xs font-bold text-slate-900 dark:text-white">David Oshodi</h5>
+                    <span class="text-[10px] text-slate-400">Responsive Layout for Homepage</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-[10px] font-bold">In-Progress</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMN 2 (3 COLS): PROJECT PROGRESS RADIAL GAUGE (Image 3 Direct Match) -->
+          <div class="lg:col-span-3 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm flex flex-col justify-between items-center text-center space-y-3">
+            <div class="w-full text-left">
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">Project Progress</h3>
+              <p class="text-xs text-slate-400">Monthly milestone health</p>
+            </div>
+
+            <!-- Semi-Circle Arc SVG Gauge -->
+            <div class="relative w-44 h-28 flex items-end justify-center mt-2">
+              <svg class="w-44 h-44 -rotate-180" viewBox="0 0 100 100">
+                <!-- Background Arc -->
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" stroke-width="12" stroke-dasharray="125 125" stroke-dashoffset="0" class="dark:stroke-slate-800" stroke-linecap="round"/>
+                <!-- Completed Arc (Green) -->
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#064e3b" stroke-width="12" stroke-dasharray="125 125" stroke-dashoffset="52" class="dark:stroke-brand-500 transition-all duration-1000" stroke-linecap="round"/>
+              </svg>
+              <!-- Center Metric Text -->
+              <div class="absolute bottom-1 flex flex-col items-center">
+                <span class="text-3xl font-extrabold text-slate-900 dark:text-white">41%</span>
+                <span class="text-[11px] font-medium text-slate-400">Project Ended</span>
+              </div>
+            </div>
+
+            <!-- Legend Pills -->
+            <div class="flex items-center justify-center gap-3 pt-2 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-brand-900 dark:bg-brand-500"></span>
+                <span>Completed</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>In Progress</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                <span>Pending</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMN 3 (4 COLS): TIME TRACKER WIDGET (Image 3 Direct Match) -->
+          <div class="lg:col-span-4 bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 time-tracker-bg text-white shadow-sm flex flex-col justify-between space-y-4 relative overflow-hidden">
+            <div class="relative z-10 flex items-center justify-between">
+              <div>
+                <span class="text-xs font-semibold text-brand-200">Time Tracker</span>
+                <h4 class="text-xs font-bold text-white/90">Sprint #4 Velocity</h4>
+              </div>
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-400 animate-pulse"></span>
+            </div>
+
+            <!-- Big Live Digital Clock Display -->
+            <div class="relative z-10 py-2 text-center">
+              <div id="timeTrackerDisplay" class="font-mono text-3xl sm:text-4xl font-extrabold tracking-wider text-white drop-shadow-md">
+                01:24:08
+              </div>
+              <span class="text-[10px] font-mono text-brand-200 uppercase tracking-widest mt-1 block">Active Recording</span>
+            </div>
+
+            <!-- Working Play / Pause / Stop Controls -->
+            <div class="relative z-10 flex items-center justify-center gap-3">
+              <button id="timerToggleBtn" class="w-10 h-10 rounded-full bg-white text-brand-950 flex items-center justify-center shadow-lg active:scale-95 hover:scale-105 transition-all" aria-label="Pause or Resume Timer">
+                <!-- Pause Icon (Default Playing) -->
+                <svg id="timerPauseIcon" class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+                <!-- Play Icon (Hidden) -->
+                <svg id="timerPlayIcon" class="w-4 h-4 fill-current hidden" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+
+              <button id="timerResetBtn" class="w-10 h-10 rounded-full bg-rose-500 hover:bg-rose-600 text-white flex items-center justify-center shadow-lg active:scale-95 hover:scale-105 transition-all" aria-label="Reset Timer">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <rect x="6" y="6" width="12" height="12" rx="2"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Decorative Organic Glow -->
+            <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-brand-400/20 blur-2xl pointer-events-none"></div>
+          </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- ROW 4: DATA TABLE WIDGET (Image 1 & 5 Inspired)             -->
+        <!-- ============================================================ -->
+        <div class="bento-card rounded-2xl sm:rounded-3xl p-5 sm:p-6 bg-white dark:bg-panel-cardDark border border-slate-200/80 dark:border-panel-borderDark shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">Active Tasks & Deliverables</h3>
+              <p class="text-xs text-slate-400">Click checkboxes to mark tasks completed</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Filter:</span>
+              <button class="task-filter-btn px-3 py-1 rounded-full text-xs font-bold bg-brand-900 dark:bg-brand-600 text-white shadow-xs">All</button>
+              <button class="task-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200">Active</button>
+              <button class="task-filter-btn px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200">Pending</button>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs whitespace-nowrap">
+              <thead>
+                <tr class="text-slate-400 border-b border-slate-100 dark:border-slate-800">
+                  <th class="py-2.5 px-3 font-semibold">TASK TITLE</th>
+                  <th class="py-2.5 px-3 font-semibold">ASSIGNEE</th>
+                  <th class="py-2.5 px-3 font-semibold">PRIORITY</th>
+                  <th class="py-2.5 px-3 font-semibold">STATUS</th>
+                  <th class="py-2.5 px-3 font-semibold">DUE DATE</th>
+                  <th class="py-2.5 px-3 font-semibold text-right">ACTION</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800/80">
+                <!-- Row 1 -->
+                <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+                  <td class="py-3 px-3 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2.5">
+                    <input type="checkbox" checked class="w-4 h-4 accent-brand-600 rounded cursor-pointer" />
+                    <span>Product Designer System Tokens</span>
+                  </td>
+                  <td class="py-3 px-3 text-slate-600 dark:text-slate-300">Alexandra Deff</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 font-bold text-[10px]">High</span></td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">Completed</span></td>
+                  <td class="py-3 px-3 font-mono text-slate-400">Jun 10, 03:20 GMT</td>
+                  <td class="py-3 px-3 text-right text-slate-400 hover:text-slate-600 cursor-pointer">•••</td>
+                </tr>
+
+                <!-- Row 2 -->
+                <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+                  <td class="py-3 px-3 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2.5">
+                    <input type="checkbox" class="w-4 h-4 accent-brand-600 rounded cursor-pointer" />
+                    <span>Digital Marketing Funnel Tracking</span>
+                  </td>
+                  <td class="py-3 px-3 text-slate-600 dark:text-slate-300">Edwin Adenike</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold text-[10px]">Medium</span></td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold text-[10px]">In-Progress</span></td>
+                  <td class="py-3 px-3 font-mono text-slate-400">Jun 08, 04:30 GMT</td>
+                  <td class="py-3 px-3 text-right text-slate-400 hover:text-slate-600 cursor-pointer">•••</td>
+                </tr>
+
+                <!-- Row 3 -->
+                <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+                  <td class="py-3 px-3 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2.5">
+                    <input type="checkbox" class="w-4 h-4 accent-brand-600 rounded cursor-pointer" />
+                    <span>Python Developer API Pipeline</span>
+                  </td>
+                  <td class="py-3 px-3 text-slate-600 dark:text-slate-300">Isaac Oluwatemilorun</td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold text-[10px]">Normal</span></td>
+                  <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-[10px]">Pending</span></td>
+                  <td class="py-3 px-3 font-mono text-slate-400">Feb 02, 05:40 GMT</td>
+                  <td class="py-3 px-3 text-right text-slate-400 hover:text-slate-600 cursor-pointer">•••</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+  <!-- ============================================================ -->
+  <!-- MOBILE SLIDE-IN SIDEBAR SHEET & BACKDROP                    -->
+  <!-- ============================================================ -->
+  <div id="mobileBackdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <aside id="mobileSidebar" class="fixed top-0 right-0 bottom-0 w-[280px] max-w-[85vw] bg-white dark:bg-panel-dark border-l border-slate-200 dark:border-panel-borderDark z-50 p-6 flex flex-col justify-between translate-x-full shadow-2xl overflow-y-auto">
+    <div class="space-y-6">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-panel-borderDark">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-brand-500 flex items-center justify-center text-white">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          </div>
+          <span class="font-extrabold text-base text-slate-900 dark:text-white">Donezo OS</span>
+        </div>
+        <button id="mobileMenuCloseBtn" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-panel-cardDark border border-slate-200 dark:border-panel-borderDark flex items-center justify-center text-slate-600 dark:text-slate-300" aria-label="Close Menu">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quick Metrics inside sheet -->
+      <div class="space-y-3 font-mono text-xs">
+        <div class="p-3.5 rounded-2xl bg-brand-900 text-white space-y-1">
+          <div class="text-brand-200 text-[10px]">TOTAL PROJECTS</div>
+          <div class="text-2xl font-extrabold">24</div>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-panel-cardDark border border-slate-200 dark:border-panel-borderDark space-y-1">
+          <div class="text-slate-400 text-[10px]">ACTIVE SPRINT</div>
+          <div class="text-lg font-bold text-brand-600 dark:text-brand-400">Sprint #4 Velocity</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Profile Footer inside sheet -->
+    <div class="pt-4 border-t border-slate-200 dark:border-panel-borderDark">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-xs">
+          BM
+        </div>
+        <div class="flex flex-col text-left leading-none">
+          <span class="text-xs font-bold text-slate-900 dark:text-white">Bahaa Mohammed</span>
+          <span class="text-[10px] text-slate-400">bahaam.coding@gmail.com</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============================================================ -->
+  <!-- JAVASCRIPT CONTROLLERS (AUDIO SYNTH, THEME, TIMER, TOOLTIP)  -->
+  <!-- ============================================================ -->
+  <script>
+    // 1. Audio Synthesizer (Zero external audio files)
+    let audioCtx = null;
+    function playBeep(freq = 640, duration = 0.08, type = 'sine') {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // 2. Theme Toggle Controller
+    const themeBtn = document.getElementById('themeToggleBtn');
+    themeBtn?.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      playBeep(980, 0.09);
+    });
+
+    // 3. Time Tracker Engine
+    let seconds = 5048; // 01:24:08 in seconds
+    let isTimerRunning = true;
+    let timerInterval = null;
+
+    const timeDisplay = document.getElementById('timeTrackerDisplay');
+    const timerToggleBtn = document.getElementById('timerToggleBtn');
+    const timerPauseIcon = document.getElementById('timerPauseIcon');
+    const timerPlayIcon = document.getElementById('timerPlayIcon');
+    const timerResetBtn = document.getElementById('timerResetBtn');
+
+    function formatTime(s) {
+      const hrs = String(Math.floor(s / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+      const secs = String(s % 60).padStart(2, '0');
+      return `${hrs}:${mins}:${secs}`;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        seconds++;
+        if (timeDisplay) timeDisplay.textContent = formatTime(seconds);
+      }, 1000);
+      isTimerRunning = true;
+      timerPauseIcon?.classList.remove('hidden');
+      timerPlayIcon?.classList.add('hidden');
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timerPauseIcon?.classList.add('hidden');
+      timerPlayIcon?.classList.remove('hidden');
+    }
+
+    startTimer();
+
+    timerToggleBtn?.addEventListener('click', () => {
+      playBeep(720, 0.08);
+      if (isTimerRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    });
+
+    timerResetBtn?.addEventListener('click', () => {
+      playBeep(440, 0.12);
+      seconds = 0;
+      if (timeDisplay) timeDisplay.textContent = '00:00:00';
+    });
+
+    // 4. Interactive Bar Chart Tooltip Controller
+    const chartBars = document.querySelectorAll('[data-val]');
+    const tooltip = document.getElementById('chartTooltip');
+    const tooltipVal = document.getElementById('tooltipVal');
+
+    chartBars.forEach((bar) => {
+      bar.addEventListener('mouseenter', () => {
+        const val = bar.getAttribute('data-val');
+        const tasks = bar.getAttribute('data-tasks');
+        if (tooltip && tooltipVal) {
+          tooltipVal.textContent = val;
+          tooltip.querySelector('span:last-child').textContent = `• ${tasks}`;
+          const rect = bar.getBoundingClientRect();
+          const parentRect = bar.parentElement.getBoundingClientRect();
+          const leftPercent = ((rect.left + rect.width / 2 - parentRect.left) / parentRect.width) * 100;
+          tooltip.style.left = `${leftPercent}%`;
+          playBeep(880, 0.04);
+        }
+      });
+    });
+
+    // 5. Start Meeting Button State
+    const meetingBtn = document.getElementById('startMeetingBtn');
+    const meetingText = document.getElementById('startMeetingText');
+    let inMeeting = false;
+
+    meetingBtn?.addEventListener('click', () => {
+      inMeeting = !inMeeting;
+      playBeep(1040, 0.1);
+      if (inMeeting) {
+        meetingText.textContent = 'In Meeting (00:01)';
+        meetingBtn.classList.remove('bg-brand-900', 'dark:bg-brand-600');
+        meetingBtn.classList.add('bg-rose-600');
+      } else {
+        meetingText.textContent = 'Start Meeting';
+        meetingBtn.classList.remove('bg-rose-600');
+        meetingBtn.classList.add('bg-brand-900', 'dark:bg-brand-600');
+      }
+    });
+
+    // 6. Mobile Sidebar Sheet Drawer
+    const mobileMenuBtn = document.getElementById('mobileMenuOpenBtn');
+    const mobileCloseBtn = document.getElementById('mobileMenuCloseBtn');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+
+    function openMobileMenu() {
+      playBeep(520, 0.06);
+      mobileSidebar?.classList.remove('translate-x-full');
+      mobileBackdrop?.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeMobileMenu() {
+      playBeep(420, 0.06);
+      mobileSidebar?.classList.add('translate-x-full');
+      mobileBackdrop?.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    mobileMenuBtn?.addEventListener('click', openMobileMenu);
+    mobileCloseBtn?.addEventListener('click', closeMobileMenu);
+    mobileBackdrop?.addEventListener('click', closeMobileMenu);
+  </script>
+</body>
+</html>
