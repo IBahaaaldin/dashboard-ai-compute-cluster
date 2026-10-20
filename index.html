@@ -325,7 +325,9 @@
               <div class="text-3xl sm:text-4xl font-extrabold tracking-tight">24</div>
             </div>
             <div class="flex items-center gap-1.5 text-[11px] font-medium text-brand-200/90 pt-1">
-              <span class="px-1.5 py-0.5 rounded bg-brand-800/80 text-[10px] font-bold">↗</span>
+              <span class="inline-flex items-center justify-center w-4 h-4 rounded bg-brand-800/80 text-brand-300">
+                <svg class="w-2.5 h-2.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </span>
               <span>Increased from last month</span>
             </div>
           </div>
@@ -342,7 +344,9 @@
               <div class="text-3xl sm:text-4xl font-extrabold tracking-tight">10</div>
             </div>
             <div class="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 pt-1">
-              <span class="px-1.5 py-0.5 rounded bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-bold text-[10px]">↗</span>
+              <span class="inline-flex items-center justify-center w-4 h-4 rounded bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400">
+                <svg class="w-2.5 h-2.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </span>
               <span>Increased from last month</span>
             </div>
           </div>
@@ -359,7 +363,9 @@
               <div class="text-3xl sm:text-4xl font-extrabold tracking-tight">12</div>
             </div>
             <div class="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 pt-1">
-              <span class="px-1.5 py-0.5 rounded bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 font-bold text-[10px]">↗</span>
+              <span class="inline-flex items-center justify-center w-4 h-4 rounded bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400">
+                <svg class="w-2.5 h-2.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </span>
               <span>Increased from last month</span>
             </div>
           </div>
@@ -376,7 +382,12 @@
               <div class="text-3xl sm:text-4xl font-extrabold tracking-tight">2</div>
             </div>
             <div class="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400 pt-1">
-              <span class="px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold text-[10px]">⏳</span>
+              <span class="inline-flex items-center justify-center w-4 h-4 rounded bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
+                <svg class="w-2.5 h-2.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <polyline points="12 7 12 12 15 15"></polyline>
+                </svg>
+              </span>
               <span>On Discuss</span>
             </div>
           </div>
@@ -401,41 +412,43 @@
             </div>
 
             <!-- Custom Interactive Pill-Bar Chart -->
-            <div class="relative h-44 w-full flex items-end justify-between px-2 pt-6 pb-2">
+            <div class="relative h-52 w-full flex items-end justify-between px-2 pt-14 pb-2">
               
               <!-- Floating Active Tooltip for Tuesday / Selected Bar -->
-              <div id="chartTooltip" class="chart-tooltip absolute -top-1 left-[38%] -translate-x-1/2 px-2.5 py-1 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-mono font-bold shadow-lg pointer-events-none z-10 flex items-center gap-1">
-                <span id="tooltipVal">34%</span>
-                <span class="text-brand-400 dark:text-brand-600">• 8 Tasks</span>
+              <div id="chartTooltip" class="chart-tooltip absolute top-2 left-[36%] -translate-x-1/2 px-3 py-1 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-mono font-bold shadow-xl pointer-events-none z-10 flex items-center gap-1.5 transition-all duration-200">
+                <span id="tooltipVal" class="text-brand-300 dark:text-brand-700">34%</span>
+                <span class="font-sans font-medium text-slate-200 dark:text-slate-700">• 8 Tasks</span>
+                <!-- Downward Caret Triangle -->
+                <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 dark:bg-white rotate-45"></div>
               </div>
 
               <!-- Sunday -->
               <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="18%" data-tasks="4 Tasks">
-                <div class="w-7 sm:w-8 h-24 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
-                  <div class="w-full h-12 rounded-full bg-stripes-dark"></div>
+                <div class="w-7 sm:w-8 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-10 rounded-full bg-stripes-dark"></div>
                 </div>
                 <span class="text-[11px] font-semibold text-slate-400">S</span>
               </div>
 
               <!-- Monday -->
               <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="26%" data-tasks="6 Tasks">
-                <div class="w-7 sm:w-8 h-32 rounded-full bg-brand-800 dark:bg-brand-700 flex items-end p-1 transition-all group-hover:scale-105">
+                <div class="w-7 sm:w-8 h-28 rounded-full bg-brand-800 dark:bg-brand-700 flex items-end p-1 transition-all group-hover:scale-105">
                   <div class="w-full h-full rounded-full bg-brand-900 dark:bg-brand-600"></div>
                 </div>
                 <span class="text-[11px] font-semibold text-slate-400">M</span>
               </div>
 
               <!-- Tuesday (ACTIVE HIGHLIGHT) -->
-              <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="34%" data-tasks="8 Tasks">
-                <div class="w-7 sm:w-8 h-36 rounded-full bg-brand-500 flex items-end p-1 shadow-lg shadow-brand-500/25 transition-all scale-105">
-                  <div class="w-full h-24 rounded-full bg-brand-100/90 dark:bg-brand-200"></div>
+              <div id="defaultActiveBar" class="flex flex-col items-center gap-2 group cursor-pointer" data-val="34%" data-tasks="8 Tasks">
+                <div class="w-7 sm:w-8 h-32 rounded-full bg-brand-500 flex items-end p-1 shadow-lg shadow-brand-500/25 transition-all scale-105 ring-2 ring-brand-400/30">
+                  <div class="w-full h-20 rounded-full bg-brand-100/90 dark:bg-brand-200"></div>
                 </div>
                 <span class="text-[11px] font-bold text-brand-600 dark:text-brand-400">T</span>
               </div>
 
               <!-- Wednesday -->
               <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="30%" data-tasks="7 Tasks">
-                <div class="w-7 sm:w-8 h-36 rounded-full bg-brand-900 dark:bg-brand-800 flex items-end p-1 transition-all group-hover:scale-105">
+                <div class="w-7 sm:w-8 h-30 rounded-full bg-brand-900 dark:bg-brand-800 flex items-end p-1 transition-all group-hover:scale-105">
                   <div class="w-full h-full rounded-full bg-brand-900 dark:bg-brand-700"></div>
                 </div>
                 <span class="text-[11px] font-semibold text-slate-400">W</span>
@@ -443,24 +456,24 @@
 
               <!-- Thursday -->
               <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="14%" data-tasks="3 Tasks">
-                <div class="w-7 sm:w-8 h-28 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
-                  <div class="w-full h-16 rounded-full bg-stripes-dark"></div>
+                <div class="w-7 sm:w-8 h-22 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-12 rounded-full bg-stripes-dark"></div>
                 </div>
                 <span class="text-[11px] font-semibold text-slate-400">T</span>
               </div>
 
               <!-- Friday -->
               <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="12%" data-tasks="2 Tasks">
-                <div class="w-7 sm:w-8 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
-                  <div class="w-full h-10 rounded-full bg-stripes-dark"></div>
+                <div class="w-7 sm:w-8 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-8 rounded-full bg-stripes-dark"></div>
                 </div>
                 <span class="text-[11px] font-semibold text-slate-400">F</span>
               </div>
 
               <!-- Saturday -->
               <div class="flex flex-col items-center gap-2 group cursor-pointer" data-val="20%" data-tasks="5 Tasks">
-                <div class="w-7 sm:w-8 h-24 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
-                  <div class="w-full h-12 rounded-full bg-stripes-dark"></div>
+                <div class="w-7 sm:w-8 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-end p-1 transition-all group-hover:scale-105">
+                  <div class="w-full h-10 rounded-full bg-stripes-dark"></div>
                 </div>
                 <span class="text-[11px] font-semibold text-slate-400">S</span>
               </div>
@@ -502,11 +515,14 @@
 
             <!-- List Items -->
             <div class="space-y-3 pt-1">
-              <!-- Item 1 -->
+              <!-- Item 1: Develop API Endpoints -->
               <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group">
                 <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-xs">
-                    //
+                  <div class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="16 18 22 12 16 6"></polyline>
+                      <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
                   </div>
                   <div>
                     <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Develop API Endpoints</h5>
@@ -516,11 +532,15 @@
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
               </div>
 
-              <!-- Item 2 -->
+              <!-- Item 2: Onboarding Flow -->
               <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group">
                 <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">
-                    ⚡
+                  <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <polyline points="16 11 18 13 22 9"></polyline>
+                    </svg>
                   </div>
                   <div>
                     <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Onboarding Flow</h5>
@@ -530,11 +550,16 @@
                 <span class="w-2 h-2 rounded-full bg-blue-500"></span>
               </div>
 
-              <!-- Item 3 -->
+              <!-- Item 3: Build Dashboard -->
               <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group">
                 <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-xs">
-                    ❖
+                  <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+                      <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+                      <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+                      <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+                    </svg>
                   </div>
                   <div>
                     <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Build Dashboard</h5>
@@ -544,11 +569,13 @@
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
               </div>
 
-              <!-- Item 4 -->
+              <!-- Item 4: Optimize Page Load -->
               <div class="flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group">
                 <div class="flex items-center gap-2.5">
-                  <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs">
-                    ⚙
+                  <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center transition-transform group-hover:scale-105">
+                    <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
                   </div>
                   <div>
                     <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">Optimize Page Load</h5>
@@ -645,32 +672,45 @@
             </div>
 
             <!-- Semi-Circle Arc SVG Gauge -->
-            <div class="relative w-44 h-28 flex items-end justify-center mt-2">
-              <svg class="w-44 h-44 -rotate-180" viewBox="0 0 100 100">
-                <!-- Background Arc -->
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" stroke-width="12" stroke-dasharray="125 125" stroke-dashoffset="0" class="dark:stroke-slate-800" stroke-linecap="round"/>
-                <!-- Completed Arc (Green) -->
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#064e3b" stroke-width="12" stroke-dasharray="125 125" stroke-dashoffset="52" class="dark:stroke-brand-500 transition-all duration-1000" stroke-linecap="round"/>
-              </svg>
-              <!-- Center Metric Text -->
-              <div class="absolute bottom-1 flex flex-col items-center">
-                <span class="text-3xl font-extrabold text-slate-900 dark:text-white">41%</span>
-                <span class="text-[11px] font-medium text-slate-400">Project Ended</span>
+            <div class="relative w-full flex flex-col items-center justify-center my-auto py-2">
+              <div class="relative w-48 h-28 flex items-center justify-center">
+                <svg viewBox="0 0 160 95" class="w-full h-full overflow-visible">
+                  <defs>
+                    <pattern id="gaugeStripes" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                      <line x1="0" y1="0" x2="0" y2="6" stroke="#cbd5e1" stroke-width="2.5" class="dark:stroke-slate-600" />
+                    </pattern>
+                  </defs>
+                  
+                  <!-- Track: Pending Segment (Striped Pattern from Right) -->
+                  <path d="M 16 85 A 64 64 0 0 1 144 85" fill="none" stroke="url(#gaugeStripes)" stroke-width="16" stroke-linecap="round" />
+                  
+                  <!-- Segment 2: In-Progress (Mid Emerald: up to 70%) -->
+                  <path d="M 16 85 A 64 64 0 0 1 144 85" fill="none" stroke="#34d399" stroke-width="16" stroke-dasharray="201.06" stroke-dashoffset="60.3" stroke-linecap="round" class="dark:stroke-emerald-400" />
+                  
+                  <!-- Segment 1: Completed (Dark Brand Emerald: up to 41%) -->
+                  <path d="M 16 85 A 64 64 0 0 1 144 85" fill="none" stroke="#064e3b" stroke-width="16" stroke-dasharray="201.06" stroke-dashoffset="118.6" stroke-linecap="round" class="dark:stroke-brand-500" />
+                </svg>
+                
+                <!-- Center Metric Text inside the Arch -->
+                <div class="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center text-center">
+                  <span class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">41%</span>
+                  <span class="text-[11px] font-semibold text-slate-400 mt-1">Project Ended</span>
+                </div>
               </div>
             </div>
 
             <!-- Legend Pills -->
             <div class="flex items-center justify-center gap-3 pt-2 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
               <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-brand-900 dark:bg-brand-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-900 dark:bg-brand-500"></span>
                 <span>Completed</span>
               </div>
               <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
                 <span>In Progress</span>
               </div>
               <div class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600"></span>
                 <span>Pending</span>
               </div>
             </div>
@@ -761,7 +801,11 @@
                   <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 font-bold text-[10px]">High</span></td>
                   <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">Completed</span></td>
                   <td class="py-3 px-3 font-mono text-slate-400">Jun 10, 03:20 GMT</td>
-                  <td class="py-3 px-3 text-right text-slate-400 hover:text-slate-600 cursor-pointer">•••</td>
+                  <td class="py-3 px-3 text-right">
+                    <button class="inline-flex items-center justify-center w-7 h-7 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                    </button>
+                  </td>
                 </tr>
 
                 <!-- Row 2 -->
@@ -774,7 +818,11 @@
                   <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold text-[10px]">Medium</span></td>
                   <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 font-bold text-[10px]">In-Progress</span></td>
                   <td class="py-3 px-3 font-mono text-slate-400">Jun 08, 04:30 GMT</td>
-                  <td class="py-3 px-3 text-right text-slate-400 hover:text-slate-600 cursor-pointer">•••</td>
+                  <td class="py-3 px-3 text-right">
+                    <button class="inline-flex items-center justify-center w-7 h-7 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                    </button>
+                  </td>
                 </tr>
 
                 <!-- Row 3 -->
@@ -787,7 +835,11 @@
                   <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold text-[10px]">Normal</span></td>
                   <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-[10px]">Pending</span></td>
                   <td class="py-3 px-3 font-mono text-slate-400">Feb 02, 05:40 GMT</td>
-                  <td class="py-3 px-3 text-right text-slate-400 hover:text-slate-600 cursor-pointer">•••</td>
+                  <td class="py-3 px-3 text-right">
+                    <button class="inline-flex items-center justify-center w-7 h-7 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -933,19 +985,38 @@
     const tooltip = document.getElementById('chartTooltip');
     const tooltipVal = document.getElementById('tooltipVal');
 
+    function positionTooltip(bar) {
+      if (!tooltip || !tooltipVal || !bar) return;
+      const val = bar.getAttribute('data-val');
+      const tasks = bar.getAttribute('data-tasks');
+      tooltipVal.textContent = val;
+      const tasksSpan = tooltip.querySelector('span:nth-child(2)');
+      if (tasksSpan) tasksSpan.textContent = `• ${tasks}`;
+      
+      const parent = tooltip.parentElement;
+      const rect = bar.getBoundingClientRect();
+      const parentRect = parent.getBoundingClientRect();
+      const barPill = bar.firstElementChild;
+      const pillRect = barPill ? barPill.getBoundingClientRect() : rect;
+      
+      const leftPercent = ((rect.left + rect.width / 2 - parentRect.left) / parentRect.width) * 100;
+      const topPx = pillRect.top - parentRect.top - tooltip.offsetHeight - 10;
+      
+      tooltip.style.left = `${leftPercent}%`;
+      tooltip.style.top = `${Math.max(4, topPx)}px`;
+    }
+
+    // Set initial position above default Tuesday bar on load
+    const defaultBar = document.getElementById('defaultActiveBar');
+    if (defaultBar) {
+      setTimeout(() => positionTooltip(defaultBar), 80);
+      window.addEventListener('resize', () => positionTooltip(defaultBar));
+    }
+
     chartBars.forEach((bar) => {
       bar.addEventListener('mouseenter', () => {
-        const val = bar.getAttribute('data-val');
-        const tasks = bar.getAttribute('data-tasks');
-        if (tooltip && tooltipVal) {
-          tooltipVal.textContent = val;
-          tooltip.querySelector('span:last-child').textContent = `• ${tasks}`;
-          const rect = bar.getBoundingClientRect();
-          const parentRect = bar.parentElement.getBoundingClientRect();
-          const leftPercent = ((rect.left + rect.width / 2 - parentRect.left) / parentRect.width) * 100;
-          tooltip.style.left = `${leftPercent}%`;
-          playBeep(880, 0.04);
-        }
+        positionTooltip(bar);
+        playBeep(880, 0.04);
       });
     });
 

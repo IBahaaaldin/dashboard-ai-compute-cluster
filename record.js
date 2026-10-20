@@ -65,16 +65,16 @@ const { execSync } = require('child_process');
   });
 
   const dPage = await desktopContext.newPage();
-  await dPage.goto(fileUrl, { waitUntil: 'commit' });
-  await dPage.waitForSelector('#timeTrackerDisplay', { timeout: 10000 });
-  await dPage.waitForTimeout(800);
+  await dPage.goto(fileUrl, { waitUntil: 'load' });
+  await dPage.waitForSelector('#addProjectBtn', { timeout: 10000 });
+  await dPage.waitForTimeout(600);
 
-  // Take Desktop Screenshot (2400x1800 @ 2x)
-  await dPage.screenshot({ path: path.join(dir, 'screenshot-desktop.png') });
-  console.log('Saved screenshot-desktop.png (2400x1800)');
+  // Take Desktop Screenshot (Full Page)
+  await dPage.screenshot({ path: path.join(dir, 'screenshot-desktop.png'), fullPage: true });
+  console.log('Saved screenshot-desktop.png (Full Page)');
 
   await injectCursor(dPage);
-  await dPage.mouse.move(600, 450);
+  await dPage.mouse.move(600, 300);
   await dPage.waitForTimeout(300);
 
   // Hover over Top 4 Metric Cards
@@ -82,8 +82,8 @@ const { execSync } = require('child_process');
   for (let i = 0; i < Math.min(4, cards.length); i++) {
     const box = await cards[i].boundingBox();
     if (box) {
-      await dPage.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 10 });
-      await dPage.waitForTimeout(220);
+      await dPage.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 8 });
+      await dPage.waitForTimeout(180);
     }
   }
 
@@ -93,6 +93,16 @@ const { execSync } = require('child_process');
     const bBox = await bar.boundingBox();
     if (bBox) {
       await dPage.mouse.move(bBox.x + bBox.width / 2, bBox.y + bBox.height / 2, { steps: 8 });
+      await dPage.waitForTimeout(180);
+    }
+  }
+
+  // Return to Tuesday active bar
+  const tuesBar = await dPage.$('#defaultActiveBar');
+  if (tuesBar) {
+    const tBox = await tuesBar.boundingBox();
+    if (tBox) {
+      await dPage.mouse.move(tBox.x + tBox.width / 2, tBox.y + tBox.height / 2, { steps: 6 });
       await dPage.waitForTimeout(200);
     }
   }
@@ -102,41 +112,67 @@ const { execSync } = require('child_process');
   if (meetingBtn) {
     const mBox = await meetingBtn.boundingBox();
     if (mBox) {
-      await dPage.mouse.move(mBox.x + mBox.width / 2, mBox.y + mBox.height / 2, { steps: 12 });
+      await dPage.mouse.move(mBox.x + mBox.width / 2, mBox.y + mBox.height / 2, { steps: 10 });
       await dPage.waitForTimeout(150);
       await dPage.mouse.down();
       await dPage.waitForTimeout(100);
       await dPage.mouse.up();
-      await dPage.waitForTimeout(600);
+      await dPage.waitForTimeout(400);
     }
   }
+
+  // Smooth Scroll Down to Row 3 (Team, Progress Arc, Time Tracker)
+  await dPage.evaluate(async () => {
+    const targetY = 460;
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const steps = 20;
+    for (let i = 1; i <= steps; i++) {
+      window.scrollTo(0, startY + (distance * i) / steps);
+      await new Promise(r => setTimeout(r, 20));
+    }
+  });
+  await dPage.waitForTimeout(400);
 
   // Interact with Time Tracker: Click Pause, then Play
   const timerToggleBtn = await dPage.$('#timerToggleBtn');
   if (timerToggleBtn) {
     const tBox = await timerToggleBtn.boundingBox();
     if (tBox) {
-      await dPage.mouse.move(tBox.x + tBox.width / 2, tBox.y + tBox.height / 2, { steps: 12 });
+      await dPage.mouse.move(tBox.x + tBox.width / 2, tBox.y + tBox.height / 2, { steps: 10 });
       await dPage.waitForTimeout(150);
       await dPage.mouse.down();
       await dPage.waitForTimeout(100);
       await dPage.mouse.up();
-      await dPage.waitForTimeout(400);
+      await dPage.waitForTimeout(300);
 
       // Click Resume
       await dPage.mouse.down();
       await dPage.waitForTimeout(100);
       await dPage.mouse.up();
-      await dPage.waitForTimeout(500);
+      await dPage.waitForTimeout(400);
     }
   }
+
+  // Smooth Scroll Down to Bottom Projects Data Table
+  await dPage.evaluate(async () => {
+    const targetY = 920;
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const steps = 20;
+    for (let i = 1; i <= steps; i++) {
+      window.scrollTo(0, startY + (distance * i) / steps);
+      await new Promise(r => setTimeout(r, 20));
+    }
+  });
+  await dPage.waitForTimeout(500);
 
   // Toggle Theme (Switch to Dark Obsidian Mode)
   const themeBtn = await dPage.$('#themeToggleBtn');
   if (themeBtn) {
     const thBox = await themeBtn.boundingBox();
     if (thBox) {
-      await dPage.mouse.move(thBox.x + thBox.width / 2, thBox.y + thBox.height / 2, { steps: 12 });
+      await dPage.mouse.move(thBox.x + thBox.width / 2, thBox.y + thBox.height / 2, { steps: 10 });
       await dPage.waitForTimeout(150);
       await dPage.mouse.down();
       await dPage.waitForTimeout(100);
@@ -145,15 +181,26 @@ const { execSync } = require('child_process');
     }
   }
 
+  // Smooth Scroll Back to Top in Dark Mode
+  await dPage.evaluate(async () => {
+    const startY = window.scrollY;
+    const steps = 25;
+    for (let i = 1; i <= steps; i++) {
+      window.scrollTo(0, startY - (startY * i) / steps);
+      await new Promise(r => setTimeout(r, 20));
+    }
+  });
+  await dPage.waitForTimeout(600);
+
   // Switch back to Light Mode
   if (themeBtn) {
     const thBox = await themeBtn.boundingBox();
     if (thBox) {
-      await dPage.mouse.move(thBox.x + thBox.width / 2, thBox.y + thBox.height / 2, { steps: 10 });
+      await dPage.mouse.move(thBox.x + thBox.width / 2, thBox.y + thBox.height / 2, { steps: 8 });
       await dPage.mouse.down();
       await dPage.waitForTimeout(100);
       await dPage.mouse.up();
-      await dPage.waitForTimeout(600);
+      await dPage.waitForTimeout(500);
     }
   }
 
@@ -183,28 +230,24 @@ const { execSync } = require('child_process');
   });
 
   const mPage = await mobileContext.newPage();
-  await mPage.goto(fileUrl, { waitUntil: 'commit' });
+  await mPage.goto(fileUrl, { waitUntil: 'load' });
   await mPage.waitForSelector('#mobileMenuOpenBtn', { timeout: 10000 });
-  await mPage.waitForTimeout(800);
+  await mPage.waitForTimeout(600);
 
-  // Take Mobile Screenshot (780x1688 @ 2x)
-  await mPage.screenshot({ path: path.join(dir, 'screenshot-mobile.png') });
-  console.log('Saved screenshot-mobile.png (780x1688)');
+  // Take Mobile Screenshot (Full Page)
+  await mPage.screenshot({ path: path.join(dir, 'screenshot-mobile.png'), fullPage: true });
+  console.log('Saved screenshot-mobile.png (Full Page)');
 
   await injectCursor(mPage);
   await mPage.mouse.move(195, 200);
-  await mPage.waitForTimeout(300);
-
-  // Scroll down slightly to view metric cards and widgets
-  await mPage.evaluate(() => window.scrollBy({ top: 220, behavior: 'smooth' }));
-  await mPage.waitForTimeout(600);
+  await mPage.waitForTimeout(200);
 
   // Open Mobile Slide-in Sidebar Sheet
   const mMenuBtn = await mPage.$('#mobileMenuOpenBtn');
   if (mMenuBtn) {
     const box = await mMenuBtn.boundingBox();
     if (box) {
-      await mPage.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 12 });
+      await mPage.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 10 });
       await mPage.waitForTimeout(150);
       await mPage.mouse.down();
       await mPage.waitForTimeout(100);
@@ -218,14 +261,39 @@ const { execSync } = require('child_process');
   if (mCloseBtn) {
     const cBox = await mCloseBtn.boundingBox();
     if (cBox) {
-      await mPage.mouse.move(cBox.x + cBox.width / 2, cBox.y + cBox.height / 2, { steps: 12 });
+      await mPage.mouse.move(cBox.x + cBox.width / 2, cBox.y + cBox.height / 2, { steps: 10 });
       await mPage.waitForTimeout(150);
       await mPage.mouse.down();
       await mPage.waitForTimeout(100);
       await mPage.mouse.up();
-      await mPage.waitForTimeout(600);
+      await mPage.waitForTimeout(500);
     }
   }
+
+  // Smooth Scroll Down through the mobile content
+  await mPage.evaluate(async () => {
+    const scrollStep = (target, duration) => new Promise(resolve => {
+      const start = window.scrollY;
+      const diff = target - start;
+      const startTime = performance.now();
+      const step = now => {
+        const progress = Math.min((now - startTime) / duration, 1);
+        window.scrollTo(0, start + diff * progress);
+        if (progress < 1) requestAnimationFrame(step);
+        else resolve();
+      };
+      requestAnimationFrame(step);
+    });
+
+    await scrollStep(600, 1000);
+    await new Promise(r => setTimeout(r, 600));
+    await scrollStep(1200, 1000);
+    await new Promise(r => setTimeout(r, 600));
+    await scrollStep(1800, 1000);
+    await new Promise(r => setTimeout(r, 800));
+    await scrollStep(0, 1200);
+  });
+  await mPage.waitForTimeout(500);
 
   await mPage.close();
   await mobileContext.close();
